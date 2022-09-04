@@ -1,0 +1,137 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" Set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Nord theme
+Plugin 'arcticicestudio/nord-vim'
+
+" NERDTree config
+Plugin 'preservim/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plugin 'ryanoasis/vim-devicons'
+
+" Auto-pairs
+Plugin 'jiangmiao/auto-pairs'
+
+" JSX and TSX support
+"Plugin 'pangloss/vim-javascript'
+"Plugin 'leafgarland/typescript-vim'
+Plugin 'peitalin/vim-jsx-typescript'
+Plugin 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plugin 'jparise/vim-graphql'
+
+" COC config
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+\ 'coc-css',
+\ 'coc-html',
+\ 'coc-eslint',
+\ 'coc-java',
+\ 'coc-json',
+\ 'coc-lists',
+\ 'coc-prettier',
+\ 'coc-python',
+\ 'coc-rls',
+\ 'coc-snippets',
+\ 'coc-tsserver'
+\ ]
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+let g:coc_global_extensions += ['coc-eslint']
+endif
+
+nnoremap <silent> K :call CocAction('doHover')<CR>
+
+" Navigating
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" CocList
+nnoremap <silent> <space>d :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>s :<C-u>CocList -I symbols<cr>
+
+" Perfoming code actions
+nmap <leader>do <Plug>(coc-codeaction)
+
+" Renaming a symbol
+nmap <leader>rn <Plug>(coc-rename)
+
+"function! ShowDocIfNoDiagnostic(timer_id)
+"  if (coc#float#has_float() == 0 && CocHasProvider('hover') == 1)
+"    silent call CocActionAsync('doHover')
+"  endif
+"endfunction
+"
+"function! s:show_hover_doc()
+"  call timer_start(500, 'ShowDocIfNoDiagnostic')
+"endfunction
+
+"autocmd CursorHoldI * :call <SID>show_hover_doc()
+"autocmd CursorHold * :call <SID>show_hover_doc()
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+set termguicolors
+syntax on
+set number
+colorscheme nord
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set autoindent
+set expandtab
+set cursorline
+set hlsearch
+set incsearch
+set omnifunc=syntaxcomplete#Complete
+set laststatus=2
+
+"NERDTree settings
+map <C-f> :NERDTreeToggle<CR>
+vmap ++ <plug>NERDCommenterToggle
+map ++ <plug>NERDCommenterToggle
+
+"autocmd VimEnter * NERDTree
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabFree()) | q | endif
+
+let g:NERDTreeGitStatusWithFlags = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:NERDTreeGitStatusNodeColorization = 1
+let g:NERDTreeColorMapCustom = {
+\ "Staged"    : "#0EE375",
+\ "Modified"  : "#D9BF91",
+\ "Rename"    : "#51C9FC",
+\ "Untracked" : "#FCE77C",
+\ "Unmerged"  : "#FC51E6",
+\ "Dirty"     : "#FFBD61",
+\ "Clean"     : "#87939A",
+\ "Ignored"   : "#808080",
+\ }
+
+let g:NERDTreeIgnore = ['^node_modules']
+
+" Shortcutting split navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+map <Tab> gt
+
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
